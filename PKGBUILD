@@ -21,6 +21,9 @@ source=(
   0002-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_.patch
   0003-Add-support-for-ZSTD-compressed-kernel.patch
   sphinx-workaround.patch
+  0001-mars-SPECIAL-for-in-tree-build.patch
+  0001-mars-v2-minimum-pre-patch-for-mars.patch
+  0001-sched-wait-fix-endless-kthread-loop-at-timeout.patch
 )
 validpgpkeys=(
   'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
@@ -29,11 +32,14 @@ validpgpkeys=(
 # https://www.kernel.org/pub/linux/kernel/v5.x/sha256sums.asc
 sha256sums=('cc0c0f902748d251cb22d0e69e3b8d260c447eb0072ef853da15da6cce775038'
             'SKIP'
-            '42fe325df60408dc3d412a4c59be5856d981db8bfa08af4dbd92615fd6b7b69e'
+            'SKIP'
             'b439f57b84bc98730c0265695abb92385ee4dcd35a5c00d4cb3d3155c75fb491'
             '4fd74bb2a7101d700fba91806141339d8c9e46a14f8fc1fe276cfb68f1eec0f5'
             '8b604b7dc447b5f1f6f0b6239d5dd3ec6a5336cba78ac6dcef8f3e59357bd8c0'
-            'b7c814c8183e4645947a6dcc3cbf80431de8a8fd4e895b780f9a5fd92f82cb8e')
+            'b7c814c8183e4645947a6dcc3cbf80431de8a8fd4e895b780f9a5fd92f82cb8e'
+            'SKIP'
+            'SKIP'
+            'SKIP')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
@@ -58,6 +64,11 @@ prepare() {
 
   echo "Setting config..."
   cp ../config .config
+
+  cd block/
+  git clone https://github.com/schoebel/mars.git
+  cd ..
+
   make olddefconfig
 
   make -s kernelrelease > version
